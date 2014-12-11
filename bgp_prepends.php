@@ -46,9 +46,9 @@ if (isset($_GET['search_state'])) {
 }
 
 if ($q){
-	$search_query = "WHERE ( $mysql_table.nodeid = '$q' OR $mysql_table.parent_nodeid = '$q') AND $mysql_table.state LIKE '%$s%' ";
+	$search_query = "WHERE ( $mysql_table.nodeid <= '".$CONF['WIRELESS_COMMUNITY_MAX_ASN']."' AND $mysql_table.parent_nodeid <= '".$CONF['WIRELESS_COMMUNITY_MAX_ASN']."' ) AND ( $mysql_table.nodeid = '$q' OR $mysql_table.parent_nodeid = '$q') AND $mysql_table.state LIKE '%$s%' ";
 }else{
-	$search_query = "WHERE $mysql_table.state LIKE '%$s%' ";
+	$search_query = "WHERE ( $mysql_table.nodeid <= '".$CONF['WIRELESS_COMMUNITY_MAX_ASN']."' AND $mysql_table.parent_nodeid <= '".$CONF['WIRELESS_COMMUNITY_MAX_ASN']."' ) AND $mysql_table.state LIKE '%$s%' ";
 }
 
 
