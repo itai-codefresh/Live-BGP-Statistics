@@ -7,6 +7,7 @@ Copy includes/config.php.dist to includes/config.php and edit it appropriately.
 Make sure you install phpseclib http://phpseclib.sourceforge.net/ on your PHP's include path.
 It's needed for SSH2 access to MikroTik routers.
 
+Also make sure you have Memcached installed and running on 127.0.0.1:11211
 
 Before using the system for the first time you should sync all WiND data to our database.
 Via shell run the following command:

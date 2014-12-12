@@ -21,6 +21,7 @@ WiND https://github.com/wind-project/wind
 Tested on Ubuntu and Fedora. It should work just fine on any other distro as well.
 PHP 5.2+
 MySQL 5.1+
+Memcached
 phpseclib ://phpseclib.sourceforge.net/
 Shell Access (to run the bgpcollect.php script)
 GNU screen (to keep running the bgpcollect.php script and still have access to its output for troubleshooting)                                      

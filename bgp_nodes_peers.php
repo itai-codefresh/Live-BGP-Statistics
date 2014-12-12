@@ -235,13 +235,38 @@ if ($NODEID > 0){
 											<div class="ui-widget">
 												<select name="nodeid" id="combobox" class="select_box">
 													<option value="">--Select--</option> 
-													<? 
-													$SELECT_NODES = mysql_query("SELECT Node_id, Node_name, Node_area, `C-Class` AS CClass, Owner FROM nodes INNER JOIN links ON nodes.Node_id = links.node1 OR nodes.Node_id = links.node2 GROUP BY Node_id ORDER BY Node_id ASC", $db);
+													<?
+													$SNODES = Cacher::cache()->get("snodes");
+    
+													if($SNODES === false) {
+	  													
+  														$SELECT_NODES = mysql_query("SELECT Node_id, Node_name, Node_area, `C-Class` AS CClass, Owner FROM nodes INNER JOIN links ON nodes.Node_id = links.node1 OR nodes.Node_id = links.node2 GROUP BY Node_id ORDER BY Node_id ASC", $db);    												
+														$SNODES = '';
+														while ($SEARCH_NODES = mysql_fetch_array($SELECT_NODES)){
+                                                			$search_cclasses = str_replace ("\n", " ", str_replace ("\r", " ", $SEARCH_NODES['CClass']));
+	                                                		
+	                                                		$SNODES .= "<option value=\"".$SEARCH_NODES['Node_id']."\" ";
+	                                                		if ($_GET['nodeid'] == $SEARCH_NODES['Node_id']){ 
+	                                                			$NODES .= "selected=\"selected\""; 
+	                                                		} 
+	                                                		$SNODES .= ">#".$SEARCH_NODES['Node_id']." - " . $SEARCH_NODES['Node_name']." - ". $SEARCH_NODES['Owner']." - ". $SEARCH_NODES['Node_area']." (".$search_cclasses.")</option>\n";
+														}	  													
+	  													
+	  													Cacher::cache()->set("snodes", $SNODES, false, 3600);  //cache for 1 hour
+    												}
+        
+    
+    												echo $SNODES;
+	
+                                                    
+													/*
+													OLD METHOD WITHOUT MEMCACHE - keeping it commented for now in case its needed in the future.  													
+													$SELECT_NODES = mysql_query("SELECT Node_id, Node_name, Node_area, `C-Class` AS CClass, Owner FROM nodes INNER JOIN links ON nodes.Node_id = links.node1 OR nodes.Node_id = links.node2 GROUP BY Node_id ORDER BY Node_id ASC", $db);    												
 													while ($SEARCH_NODES = mysql_fetch_array($SELECT_NODES)){
                                                 		$search_cclasses = str_replace ("\n", " ", $SEARCH_NODES['CClass']);
 	                                                ?>                                                    
 													<option value="<?=$SEARCH_NODES['Node_id'];?>"   <? if ($_GET['nodeid'] == $SEARCH_NODES['Node_id']){ echo "selected=\"selected\""; }?> >#<?=$SEARCH_NODES['Node_id'];?> - <?=$SEARCH_NODES['Node_name'];?> - <?=$SEARCH_NODES['Owner'];?> - <?=$SEARCH_NODES['Node_area'];?> (<?=$search_cclasses;?>)</option>
-													<?}?> 
+													<?}*/?> 
 												</select>
 											</div>                                
 										</td>

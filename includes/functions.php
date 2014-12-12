@@ -141,4 +141,34 @@ function sec2hms ($oldTime, $newTime, $padHours = false, $padDays=false)  {
 
 }    
 
+//Memcache Class
+class Cacher extends Memcache {
+        static public $memcacheObj = NULL;
+        static function cache() {
+                if (self::$memcacheObj == NULL) {
+                        if (class_exists('Memcache')) {
+                                self::$memcacheObj = new Memcache;
+                                self::$memcacheObj->addServer ("127.0.0.1");
+                        } else {
+                                return false;
+                        }
+                }
+                return self::$memcacheObj;
+        }
+
+        static function flushCache() {
+                if (self::$memcacheObj == NULL) {
+                        self::cache();
+                }
+                return self::$memcacheObj->flush();
+        }
+
+        static function stats() {
+                if (self::$memcacheObj == NULL) {
+                        self::cache();
+                }
+                return self::$memcacheObj->getExtendedStats();
+        }
+}
+
 ?>
