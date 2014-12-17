@@ -190,7 +190,7 @@ $url_vars = htmlspecialchars($url_vars);
 								<tr>
 									<th><?=create_sort_link("CClass","Prefix");?></th>
 									<th><?=create_sort_link("Node_id","AS Number (NodeID)");?></th>
-									<?/*<th><?=create_sort_link("Seenby","First Seen By");?></th>*/?>
+									<th><?=create_sort_link("Seenby","Seen by Node");?></th>
 									<th><?=create_sort_link("date","Last Status Change");?></th>
 									<th><?=create_sort_link("state","Prefix Announced");?></th>
 								</tr>
@@ -202,15 +202,15 @@ $url_vars = htmlspecialchars($url_vars);
 
                             	$SELECT_NODE1 = mysql_query("SELECT * from nodes WHERE Node_id = '".$LISTING['Node_id']."' ", $db);
 								$NODE1 = mysql_fetch_array($SELECT_NODE1);
-								/*
+								
 								$SELECT_NODE2 = mysql_query("SELECT * from nodes WHERE Node_id = '".$LISTING['Seenby']."' ", $db);
 								$NODE2 = mysql_fetch_array($SELECT_NODE2);
-								*/
+								
 								?>      
 								<tr onmouseover="this.className='on' " onmouseout="this.className='off' " id="tr-<?=$LISTING['id'];?>">
 									<td align="center" nowrap><?=$LISTING['CClass'];?></td>
 									<td align="center" nowrap><a href="index.php?section=bgp_nodes_peers&nodeid=<?=$LISTING['Node_id'];?>" title="Show #<?=$LISTING['Node_id'];?> <?=$NODE1['Node_name'];?> Node Peers" class="<?if (staff_help()){?>tip_south<?}?>">#<?=$LISTING['Node_id'];?> <?=$NODE1['Node_name'];?></a></td>
-									<?/*<td align="center" nowrap><a href="index.php?section=bgp_nodes_peers&nodeid=<?=$LISTING['Seenby'];?>" title="Show #<?=$LISTING['Seenby'];?>  <?=$NODE2['Node_name'];?>Node Peers" class="<?if (staff_help()){?>tip_south<?}?>">#<?=$LISTING['Seenby'];?> <?=$NODE2['Node_name'];?></a></td>*/?>
+									<td align="center" nowrap><a href="index.php?section=bgp_nodes_peers&nodeid=<?=$LISTING['Seenby'];?>" title="Show #<?=$LISTING['Seenby'];?>  <?=$NODE2['Node_name'];?>Node Peers" class="<?if (staff_help()){?>tip_south<?}?>">#<?=$LISTING['Seenby'];?> <?=$NODE2['Node_name'];?></a></td>
 									<td align="center" nowrap ><?=sec2hms($LISTING['date'], time());?></td>
 									<td align="center" nowrap ><a href="javascript:void(0)" class="<?if (staff_help()){?>tip_south<?}?> <? if ($LISTING['state'] == 'up') { ?>enabled<? } else { ?>disabled<? } ?>" title="Prepend is: <?=strtoupper($LISTING['state']);?>"><span>Prepend is: <?=strtoupper($LISTING['state']);?></span></a></td>
                             	</tr>

@@ -173,7 +173,7 @@ $url_vars = htmlspecialchars($url_vars);
 							<tr>
 								<th><?=create_sort_link("node1","Node A");?></th>
 								<th><?=create_sort_link("node2","Node B");?></th>
-								<?/*<th><?=create_sort_link("byrouter", "First Seen By");?></th>*/?>
+								<th><?=create_sort_link("byrouter", "Seen by Node");?></th>
 								<th><?=create_sort_link("date","Last Status Change");?></th>
 								<th><?=create_sort_link("state","Peer Status");?></th>
 							</tr>
@@ -187,15 +187,15 @@ $url_vars = htmlspecialchars($url_vars);
 							$NODE1 = mysql_fetch_array($SELECT_NODE1);
 							$SELECT_NODE2 = mysql_query("SELECT * from nodes WHERE Node_id = '".$LISTING['node2']."' ", $db);
 							$NODE2 = mysql_fetch_array($SELECT_NODE2);
-							/*
+							
 							$SELECT_NODE3 = mysql_query("SELECT * from nodes WHERE Node_id = '".$LISTING['byrouter']."' ", $db);
 							$NODE3 = mysql_fetch_array($SELECT_NODE3);
-							*/
-                            ?>      
+							
+							?>      
 							<tr onmouseover="this.className='on' " onmouseout="this.className='off' " id="tr-<?=$LISTING['id'];?>">
 								<td nowrap><a href="index.php?section=bgp_nodes_peers&nodeid=<?=$LISTING['node1'];?>" title="Show #<?=$LISTING['node1'];?> <?=$NODE1['Node_name'];?> Node Peers" class="<?if (staff_help()){?>tip_south<?}?>">#<?=$LISTING['node1'];?> <?=$NODE1['Node_name'];?></a></td>
 								<td nowrap><a href="index.php?section=bgp_nodes_peers&nodeid=<?=$LISTING['node2'];?>" title="Show #<?=$LISTING['node2'];?> <?=$NODE2['Node_name'];?> Node Peers" class="<?if (staff_help()){?>tip_south<?}?>">#<?=$LISTING['node2'];?> <?=$NODE2['Node_name'];?></a></td>
-								<?/*  <td nowrap><a href="index.php?section=bgp_nodes_peers&nodeid=<?=$LISTING['byrouter'];?>" title="Show #<?=$LISTING['byrouter'];?> <?=$NODE3['Node_name'];?> Node Peers" class="<?if (staff_help()){?>tip_south<?}?>">#<?=$LISTING['byrouter'];?> <?=$NODE3['Node_name'];?></a></td>*/?>
+								<td nowrap><a href="index.php?section=bgp_nodes_peers&nodeid=<?=$LISTING['byrouter'];?>" title="Show #<?=$LISTING['byrouter'];?> <?=$NODE3['Node_name'];?> Node Peers" class="<?if (staff_help()){?>tip_south<?}?>">#<?=$LISTING['byrouter'];?> <?=$NODE3['Node_name'];?></a></td>
 								<td align="center" nowrap ><?=sec2hms($LISTING['date'], time());?></td>
 								<td align="center" nowrap ><a href="javascript:void(0)" class="<?if (staff_help()){?>tip_south<?}?> <? if ($LISTING['state'] == 'up') { ?>enabled<? } else { ?>disabled<? } ?>" title="Prepend is: <?=strtoupper($LISTING['state']);?>"><span>Prepend is: <?=strtoupper($LISTING['state']);?></span></a></td>
                             </tr>
