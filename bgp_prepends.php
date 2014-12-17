@@ -32,7 +32,15 @@ $action_title = "All BGP Prepends";
 $search_vars = "";
 
 $q = mysql_real_escape_string($_GET['q'], $db);
-if ($q) { 
+if ($q) {
+	if (strstr($q,"!")){
+		$not_qsql = '!';
+		$not_qsql_cond = ' AND ';
+		$q_sql = str_replace("!", "", $q);
+	}else{
+		$not_qsql_cond = ' OR ';				
+		$q_sql = $q;
+	} 
 	$search_vars .= "&q=$q"; 
 	$action_title = "Search: " . $q;
 }
@@ -46,7 +54,7 @@ if (isset($_GET['search_state'])) {
 }
 
 if ($q){
-	$search_query = "WHERE ( $mysql_table.nodeid <= '".$CONF['WIRELESS_COMMUNITY_MAX_ASN']."' AND $mysql_table.parent_nodeid <= '".$CONF['WIRELESS_COMMUNITY_MAX_ASN']."' ) AND ( $mysql_table.nodeid = '$q' OR $mysql_table.parent_nodeid = '$q') AND $mysql_table.state LIKE '%$s%' ";
+	$search_query = "WHERE ( $mysql_table.nodeid <= '".$CONF['WIRELESS_COMMUNITY_MAX_ASN']."' AND $mysql_table.parent_nodeid <= '".$CONF['WIRELESS_COMMUNITY_MAX_ASN']."' ) AND ( $mysql_table.nodeid ".$not_qsql."= '$q_sql' ".$not_qsql_cond." $mysql_table.parent_nodeid ".$not_qsql."= '$q_sql') AND $mysql_table.state LIKE '%$s%' ";
 }else{
 	$search_query = "WHERE ( $mysql_table.nodeid <= '".$CONF['WIRELESS_COMMUNITY_MAX_ASN']."' AND $mysql_table.parent_nodeid <= '".$CONF['WIRELESS_COMMUNITY_MAX_ASN']."' ) AND $mysql_table.state LIKE '%$s%' ";
 }

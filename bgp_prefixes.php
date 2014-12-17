@@ -33,12 +33,24 @@ $search_vars = "";
 
 $q = mysql_real_escape_string($_GET['q'], $db);
 if ($q) { 
+	if (strstr($q,"!")){
+		$not_qsql = '!';
+		$q_sql = str_replace("!", "", $q);
+	}else{
+		$q_sql = $q;		
+	}
 	$search_vars .= "&q=$q"; 
 	$action_title = "Search: " . $q;
 }
 
 $p = mysql_real_escape_string($_GET['p'], $db);
 if ($p) { 
+	if (strstr($p,"!")){
+		$not_psql = 'NOT ';
+		$p_sql = str_replace("!", "", $p);
+	}else{
+		$p_sql = $p;
+	}
 	$search_vars .= "&p=$p"; 
 	$action_title = "Search: " . $p;
 }
@@ -52,11 +64,11 @@ if (isset($_GET['search_state'])) {
 }
 
 if ($q && $p){
-	$search_query = "WHERE ( $mysql_table.Node_id = '$q' AND $mysql_table.CClass LIKE '%$p%') AND $mysql_table.state LIKE '%$s%'  ";
+	$search_query = "WHERE ( $mysql_table.Node_id ".$not_qsql."= '$q_sql' AND $mysql_table.CClass ".$not_psql."LIKE '%$p_sql%') AND $mysql_table.state LIKE '%$s%'  ";
 }elseif ($q){
-	$search_query = "WHERE $mysql_table.Node_id = '$q' AND $mysql_table.state LIKE '%$s%'  ";
+	$search_query = "WHERE $mysql_table.Node_id ".$not_qsql."= '$q_sql' AND $mysql_table.state LIKE '%$s%'  ";
 }elseif ($p){
-	$search_query = "WHERE $mysql_table.CClass LIKE '%$p%' AND $mysql_table.state LIKE '%$s%'  ";
+	$search_query = "WHERE $mysql_table.CClass ".$not_psql."LIKE '%$p_sql%' AND $mysql_table.state LIKE '%$s%'  ";
 }else{
 	$search_query = "WHERE $mysql_table.state LIKE '%$s%'  ";		
 }
